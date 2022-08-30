@@ -47,13 +47,16 @@ router.get("/:id", async (req,res)=>{
 });
 //GET ALL
 router.get("/", async(req,res,next)=>{
-    console.log("Hi, I am a hotel route")
-    next()
+    const failed = true
+    const err=new Error()
+    err.status=404;
+    err.message="Sorry, not found!";
+    if (failed) return next(err)
     try{
-        const hotels = await Hotel.find();
+        const hotels = await Hotel.findById("sr");
         res.status(200).json(hotels);
     }catch(err){
-        res.status(500).json(err);
+        next(err);
     }
 });
 
